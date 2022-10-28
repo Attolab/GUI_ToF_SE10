@@ -238,6 +238,12 @@ class FileManager:
         indexing = np.argsort(delay_stage, axis=1)
         delay = 2 * np.take_along_axis(delay_stage, indexing, axis=1) / ( 0.299792458)   #delay in fs
         signal = data #np.take_along_axis(data, np.multiply.outer(indexing, np.ones(len(tof))).astype(int), axis=1)
+
+        for i in range(len(angle_HWP)):
+            signal[i] = (signal[i].T - signal[i][:, 0]).T
+        print('done')
+            
+
         signal_params = {'signal':signal,
                     't_vol':tof,
                     'delay':delay,

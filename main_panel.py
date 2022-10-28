@@ -320,12 +320,13 @@ class MainPanel(Ui_main_panel,QWidget):
             x = self.signal['angle_HWP']
             y = self.signal['t_vol']
             delay = self.signal['delay'][0]
-            freqs, TF_signal = self.doFourierTransform(delay, self.signal['signal'], N=1024, windowchoice=2, axis=1)
+            freqs, TF_signal = self.doFourierTransform(delay, self.signal['signal'], N=2048, windowchoice=2, axis=1)
 
             if not self.time_radioButton.isChecked():
                 y, TF_signal = self.getData_energySpace(y, TF_signal[0].T)[0], np.array([self.getData_energySpace(y, TF_signal[i].T)[1].T for i in range(len(TF_signal))])
                 
-            phase = np.angle(TF_signal[:,np.argmin(np.abs(freqs-oscillation_frequency))])
+            TF_2w = TF_signal[:,np.argmin(np.abs(freqs-oscillation_frequency))]
+            phase = np.where( (np.abs(TF_2w)>0.0*np.max(np.abs(TF_2w))) , np.angle(TF_2w), np.nan)
 
             t_vol_for_offset = C.str2float(self.tvol_value_lineEdit.text())
             phase = self.offset_phases(phase, y, t_vol_for_offset)
