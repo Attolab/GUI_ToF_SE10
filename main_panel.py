@@ -320,7 +320,7 @@ class MainPanel(Ui_main_panel,QWidget):
             x = self.signal['angle_HWP']
             y = self.signal['t_vol']
             delay = self.signal['delay'][0]
-            freqs, TF_signal = self.doFourierTransform(delay, self.signal['signal'], N=2048, windowchoice=2, axis=1)
+            freqs, TF_signal = self.doFourierTransform(delay, self.signal['signal'], N=1024, windowchoice=2, axis=1)
 
             if not self.time_radioButton.isChecked():
                 y, TF_signal = self.getData_energySpace(y, TF_signal[0].T)[0], np.array([self.getData_energySpace(y, TF_signal[i].T)[1].T for i in range(len(TF_signal))])
